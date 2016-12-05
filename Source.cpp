@@ -1,6 +1,3 @@
-//Fergal O'Shea
-//04-12-16
-
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
@@ -72,7 +69,7 @@ void draw(Board*, Snake*);
 void move_snake(Snake*);
 
 void main() {
-	
+	int y;
 	food_x=rand()%118+1;
 	food_y=rand()%28+1;
 
@@ -93,7 +90,8 @@ void main() {
 		Sleep(10);
 	}
 				
-
+	std::cout << "\nyou dead son\n";
+	std::cin >> y;
 
 	
 }
@@ -143,24 +141,36 @@ void move_snake(Snake* snake) {
 			snake->head->y_speed = -1;
 			snake->head->x_speed = 0;
 		}
-	}if (GetAsyncKeyState(VK_DOWN)) {
+	}else if (GetAsyncKeyState(VK_DOWN)) {
 		if (snake->head->x_speed != 0) {
 			snake->head->y_speed = 1;
 			snake->head->x_speed = 0;
 		}
-	}if (GetAsyncKeyState(VK_LEFT)) {
+	}else if (GetAsyncKeyState(VK_LEFT)) {
 		if (snake->head->y_speed != 0) {
 			snake->head->y_speed = 0;
 			snake->head->x_speed = -1;
 		}
-	}if (GetAsyncKeyState(VK_RIGHT)) {
+	}else if (GetAsyncKeyState(VK_RIGHT)) {
 		if (snake->head->y_speed != 0) {
 			snake->head->y_speed = 0;
 			snake->head->x_speed = 1;
 		}
 	}
 
-
+	if (snake->head->x == 0 || snake->head->x == 118 || snake->head->y == 0 || snake->head->y == 29) {
+		game_on = false;
+	}
+	
+	if (snake->size > 3) {
+		curr = snake->tail;
+		while (curr->next->next != snake->head) {
+			if (snake->head->x == curr->x && snake->head->y == curr->y) {
+				game_on = false;
+			}
+			curr = curr->next;
+		}
+	}
 
 	snake->head->x = snake->head->x + snake->head->x_speed;
 	snake->head->y = snake->head->y + snake->head->y_speed;
